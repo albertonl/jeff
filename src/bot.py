@@ -152,7 +152,7 @@ def regMessageReply(message):
     # If none of the previous coinciding, reply to 1/8 of messages
     ran_num = random.randint(1,8)
     if ran_num==1 or message.chat.type=="private":
-        logger.info('No previous successful checks. 12.5% chance of reply coinciding or in private chat. Replying random message...')
+        logger.info('12.5% chance of reply coinciding or in private chat. Replying random message...')
         # Reply random message
         reply_msg = random.choice(regMessages)
         aux = ""
