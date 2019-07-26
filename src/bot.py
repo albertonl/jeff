@@ -1,7 +1,7 @@
 import telebot
 import logging
-from telegram.ext import Updater
-from telegram.ext import CommandHandler
+#from telegram.ext import Updater
+#from telegram.ext import CommandHandler
 import random
 
 from config.auth import token, my_bot_id
@@ -27,9 +27,14 @@ logger = logging.getLogger("ImGonnaBeYourWorstNightmareBot")
 
 # Write into message history function
 def writeIntoFile(msg):
-    # Open the file to append at the end of the file
+    # Open the file to append a newline at the end of the file
     file = open("messages.txt","a")
-    file.write("\n" + msg)
+    file.write("\n")
+    file.close()
+
+    # Open the file in binary mode to append the message text
+    file = open("messages.txt","ab")
+    file.write(msg)
     file.close()
 
 # Reply to '/start' command
@@ -59,6 +64,7 @@ def regMessageReply(message):
     if len(msg) > 1: # To avoid single-character messages
         writeIntoFile(msg)
 
+    msg = str(message.text.encode("utf-8"))
     logger.info('Message received from client (\"' + msg + '\"). Analyzing...')
     # Look for mentions in the message
     for i in range(len(unames)):
