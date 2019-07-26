@@ -4,7 +4,7 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 import random
 
-from config.auth import token
+from config.auth import token, my_bot_id
 from config.ident import unames, rnames
 
 # Names of the bot to use later in regMessageReply()
@@ -42,7 +42,7 @@ def start(message):
 @bot.message_handler(commands=['description'])
 def description(message):
     logger.info('\'description\' instruction received from client')
-    bot.reply_to(message,"I am a very dumb bot plz don\'t play too much with me else I will be your worst nightmare :)\nCheck what my father, Alberto, has put in my brain at https://github.com/albertonl/annoyingBot coz it\'s BIG BRAIN TIME")
+    bot.reply_to(message,"I am a very dumb bot plz don\'t play too much with me else I will be your worst nightmare :)\nCheck what my father, Alberto, has put in my brain at https://github.com/albertonl/jeff coz it\'s BIG BRAIN TIME")
 
 # Reply to '/reee' command
 @bot.message_handler(commands=['reee'])
@@ -84,13 +84,64 @@ def regMessageReply(message):
             bot.reply_to(message,reply)
             return
 
-    # Look for bot name in message
+    # Look for bot's username in message
     if msg.find("@ImGonnaBeYourWorstNightmareBot")!=-1:
         logger.info('Bot username found in message: \"@ImGonnaBeYourWorstNightmareBot\"')
         bot.reply_to(message,random.choice(specialMessages))
         return
 
+
+    # See if the message is a reply to a bot's message
+    if message.reply_to_message != None:
+        if message.reply_to_message.from_user.id==my_bot_id:
+            logger.info('Found reply to a bot\'s message. Analyzing...')
+            # Reply random message
+            reply_msg = random.choice(regMessages)
+            aux = ""
+            for rname in rnames:
+                aux = rname
+                # If found regular name
+                if reply_msg.find(aux)!=-1:
+                    # Replace by sender's name
+                    reply_msg.replace(reply_msg,message.from_user.first_name)
+                    logger.info('Found regular name mention in reply message. Replacing by sender\'s message and sending...')
+                    bot.reply_to(message,reply_msg)
+                    return
+                else:
+                    aux.lower()
+                    # If found name in lower
+                    if reply_msg.find(aux)!=-1:
+                        # Replace by sender's name
+                        reply_msg.replace(reply_msg,message.from_user.first_name)
+                        logger.info('Found lower name mention in reply message. Replacing by sender\'s message and sending...')
+                        bot.reply_to(message,reply_msg)
+                        return
+                    else:
+                        aux.upper()
+                        # If found name in upper
+                        if reply_msg.find(aux)!=-1:
+                            # Replace by sender's name
+                            reply_msg.replace(reply_msg,message.from_user.first_name)
+                            logger.info('Found upper name mention in reply message. Replacing by sender\'s message and sending...')
+                            bot.reply_to(message,reply_msg)
+                            return
+            for uname in unames:
+                aux = uname
+                # If found regular username
+                if reply_msg.find(aux)!=-1:
+                    # Replace by sender's username
+                    reply_msg.replace(reply_msg,message.from_user.first_name)
+                    logger.info('Found regular username mention in reply message. Replacing by sender\'s message and sending...')
+                    bot.reply_to(message,reply_msg)
+                    return
+            logger.info('None of the previous checks succeeded. Replying random message...')
+            bot.reply_to(message,reply_msg)
+            return
+
+    # Lowercase message
     msg.lower()
+
+    # Look for bot's name in message (bot, jeff)
     for name in names:
         if msg.find(name)!=-1:
             logger.info('Bot name found in message: \"' + name + '\"')
@@ -98,12 +149,51 @@ def regMessageReply(message):
             bot.reply_to(message,random.choice(specialMessages))
             return
 
-    # If no name found, reply to 1/5 of messages
-    ran_num = random.randint(1,5)
-    if ran_num==1:
-        logger.info('No bot name found in message. 20% chance of reply coinciding. Replying random message...')
+    # If none of the previous coinciding, reply to 1/8 of messages
+    ran_num = random.randint(1,8)
+    if ran_num==1 or message.chat.type=="private":
+        logger.info('No previous successful checks. 12.5% chance of reply coinciding or in private chat. Replying random message...')
         # Reply random message
-        bot.reply_to(message,random.choice(regMessages))
+        reply_msg = random.choice(regMessages)
+        aux = ""
+        for rname in rnames:
+            aux = rname
+            # If found regular name
+            if reply_msg.find(aux)!=-1:
+                # Replace by sender's name
+                reply_msg.replace(reply_msg,message.from_user.first_name)
+                logger.info('Found regular name mention in reply message. Replacing by sender\'s message and sending...')
+                bot.reply_to(message,reply_msg)
+                return
+            else:
+                aux.lower()
+                # If found name in lower
+                if reply_msg.find(aux)!=-1:
+                    # Replace by sender's name
+                    reply_msg.replace(reply_msg,message.from_user.first_name)
+                    logger.info('Found lower name mention in reply message. Replacing by sender\'s message and sending...')
+                    bot.reply_to(message,reply_msg)
+                    return
+                else:
+                    aux.upper()
+                    # If found name in upper
+                    if reply_msg.find(aux)!=-1:
+                        # Replace by sender's name
+                        reply_msg.replace(reply_msg,message.from_user.first_name)
+                        logger.info('Found upper name mention in reply message. Replacing by sender\'s message and sending...')
+                        bot.reply_to(message,reply_msg)
+                        return
+        for uname in unames:
+            aux = uname
+            # If found regular username
+            if reply_msg.find(aux)!=-1:
+                # Replace by sender's username
+                reply_msg.replace(reply_msg,message.from_user.first_name)
+                logger.info('Found regular username mention in reply message. Replacing by sender\'s message and sending...')
+                bot.reply_to(message,reply_msg)
+                return
+        logger.info('None of the previous checks succeeded. Replying random message...')
+        bot.reply_to(message,reply_msg)
         return
 
 if __name__=="__main__":
