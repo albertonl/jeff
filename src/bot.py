@@ -8,7 +8,7 @@ from config.auth import token, my_bot_id
 from config.ident import unames, rnames
 
 # Names of the bot to use later in regMessageReply()
-names = ['bot','jeff','jeffrey','annoyingbot','annoying bot']
+names = ['bot','jeff','jeffrey','annoyingbot','annoying bot','Bot','Jeff','Jeffrey','Annoying Bot']
 
 # Old messages parsing
 history = open("messages.txt")
@@ -137,9 +137,6 @@ def regMessageReply(message):
             logger.info('None of the previous checks succeeded. Replying random message...')
             bot.reply_to(message,reply_msg)
             return
-
-    # Lowercase message
-    msg.lower()
 
     # Look for bot's name in message (bot, jeff)
     for name in names:
