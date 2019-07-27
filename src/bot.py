@@ -61,7 +61,7 @@ def regMessageReply(message):
     msg = message.text.encode("utf-8")
 
     # Write message into message history
-    if len(msg) > 1: # To avoid single-character messages
+    if len(msg) > 1 and msg[0]!="/": # To avoid single-character messages and fake commands
         writeIntoFile(msg)
 
     msg = str(message.text.encode("utf-8"))
@@ -109,7 +109,7 @@ def regMessageReply(message):
                 # If found regular name
                 if reply_msg.find(aux)!=-1:
                     # Replace by sender's name
-                    reply_msg.replace(aux,message.from_user.first_name)
+                    reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                     logger.info('Found regular name mention in reply message. Replacing by sender\'s message and sending...')
                     bot.reply_to(message,reply_msg)
                     return
@@ -118,7 +118,7 @@ def regMessageReply(message):
                     # If found name in lower
                     if reply_msg.find(aux)!=-1:
                         # Replace by sender's name
-                        reply_msg.replace(aux,message.from_user.first_name)
+                        reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                         logger.info('Found lower name mention in reply message. Replacing by sender\'s message and sending...')
                         bot.reply_to(message,reply_msg)
                         return
@@ -127,7 +127,7 @@ def regMessageReply(message):
                         # If found name in upper
                         if reply_msg.find(aux)!=-1:
                             # Replace by sender's name
-                            reply_msg.replace(aux,message.from_user.first_name)
+                            reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                             logger.info('Found upper name mention in reply message. Replacing by sender\'s message and sending...')
                             bot.reply_to(message,reply_msg)
                             return
@@ -136,7 +136,7 @@ def regMessageReply(message):
                 # If found regular username
                 if reply_msg.find(aux)!=-1:
                     # Replace by sender's username
-                    reply_msg.replace(aux,message.from_user.first_name)
+                    reply_msg = reply_msg.replace(aux,message.from_user.username)
                     logger.info('Found regular username mention in reply message. Replacing by sender\'s message and sending...')
                     bot.reply_to(message,reply_msg)
                     return
@@ -164,7 +164,7 @@ def regMessageReply(message):
             # If found regular name
             if reply_msg.find(aux)!=-1:
                 # Replace by sender's name
-                reply_msg.replace(aux,message.from_user.first_name)
+                reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                 logger.info('Found regular name mention in reply message. Replacing by sender\'s message and sending...')
                 bot.reply_to(message,reply_msg)
                 return
@@ -173,7 +173,7 @@ def regMessageReply(message):
                 # If found name in lower
                 if reply_msg.find(aux)!=-1:
                     # Replace by sender's name
-                    reply_msg.replace(aux,message.from_user.first_name)
+                    reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                     logger.info('Found lower name mention in reply message. Replacing by sender\'s message and sending...')
                     bot.reply_to(message,reply_msg)
                     return
@@ -182,7 +182,7 @@ def regMessageReply(message):
                     # If found name in upper
                     if reply_msg.find(aux)!=-1:
                         # Replace by sender's name
-                        reply_msg.replace(aux,message.from_user.first_name)
+                        reply_msg = reply_msg.replace(aux,message.from_user.first_name)
                         logger.info('Found upper name mention in reply message. Replacing by sender\'s message and sending...')
                         bot.reply_to(message,reply_msg)
                         return
@@ -191,7 +191,7 @@ def regMessageReply(message):
             # If found regular username
             if reply_msg.find(aux)!=-1:
                 # Replace by sender's username
-                reply_msg.replace(aux,message.from_user.first_name)
+                reply_msg = reply_msg.replace(aux,"@" + message.from_user.username)
                 logger.info('Found regular username mention in reply message. Replacing by sender\'s message and sending...')
                 bot.reply_to(message,reply_msg)
                 return
