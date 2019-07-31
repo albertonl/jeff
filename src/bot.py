@@ -26,7 +26,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger("ImGonnaBeYourWorstNightmareBot")
 
 # Write into message history function
-def writeIntoFile(msg):
+def write_into_file(msg):
     # Open the file to append a newline at the end of the file
     file = open("messages.txt","a")
     file.write("\n")
@@ -57,12 +57,12 @@ def reee(message):
 
 # Reply to regular messages
 @bot.message_handler(func=lambda message: True)
-def regMessageReply(message):
+def reg_message_reply(message):
     msg = message.text.encode("utf-8")
 
     # Write message into message history
     if len(msg) > 1 and msg[0]!="/": # To avoid single-character messages and fake commands
-        writeIntoFile(msg)
+        write_into_file(msg)
 
     msg = str(message.text.encode("utf-8"))
     logger.info('Message received from client (\"' + msg + '\"). Analyzing...')
